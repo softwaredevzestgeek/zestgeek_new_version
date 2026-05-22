@@ -6,28 +6,81 @@ import CaseStudy2 from '@/public/assets/images/case_study2.png';
 import CaseStudy3 from '@/public/assets/images/case_study3.png';
 import { CaseStudyListItem } from './components/CaseStudyListItem';
 
-const caseStudies = [
-    {
-        id: 1,
-        title: 'AI Chatbot Platform',
-        category: 'AI Development',
-        imageSrc: CaseStudy1,
-        hasBorder: false,
+export const caseStudies = [
+  {
+    id: 1,
+
+    title: 'AI Chatbot Platform',
+
+    category: 'AI Development',
+
+    imageSrc: CaseStudy1,
+
+    hasBorder: false,
+
+    description:
+      'Automated customer support using AI, reducing operational costs by 40% and improving response time by 3x across channels.',
+
+    features: [
+      'Real-time responses',
+      'Multi-channel support',
+    ],
+
+    cta: {
+      label: 'View Case Study',
+      href: '/case-studies/ai-chatbot',
     },
-    {
-        id: 2,
-        title: 'SaaS Management Platform',
-        category: 'SaaS Development',
-        imageSrc: CaseStudy2,
-        hasBorder: true,
+  },
+
+  {
+    id: 2,
+
+    title: 'SaaS Management Platform',
+
+    category: 'SaaS Development',
+
+    imageSrc: CaseStudy2,
+
+    hasBorder: true,
+
+    description:
+      'Built a scalable SaaS platform handling 10K+ daily operations with real-time analytics, automation, and seamless user management.',
+
+    features: [
+      'Real-time analytics',
+      'Scalable architecture',
+    ],
+
+    cta: {
+      label: 'View Case Study',
+      href: '/case-studies/saas-platform',
     },
-    {
-        id: 3,
-        title: 'E-commerce Platform',
-        category: 'Web Development',
-        imageSrc: CaseStudy3,
-        hasBorder: false,
+  },
+
+  {
+    id: 3,
+
+    title: 'E-commerce Platform',
+
+    category: 'Web Development',
+
+    imageSrc: CaseStudy3,
+
+    hasBorder: false,
+
+    description:
+      'Improved user experience and performance, increasing conversions by 35% with a fast, scalable and mobile-first architecture.',
+
+    features: [
+      'Faster load times',
+      'Optimized checkout flow',
+    ],
+
+    cta: {
+      label: 'View Case Study',
+      href: '/case-studies/ecommerce',
     },
+  },
 ];
 
 export type CaseStudyListItemType = typeof caseStudies[number];
@@ -67,7 +120,7 @@ export function CaseStudies() {
                 </div>
 
                 {/* CTA Button Component */}
-                <button className="inline-flex items-center gap-2 h-[50px] w-[277px] flex items-center justify-center border border-[#8CC33F] bg-white text-[#74aa2f] font-medium text-sm rounded-lg hover:bg-[#8CC33F] hover:text-white transition-all duration-300 shadow-sm font-kumbh group cursor-pointer">
+                <button className="inline-flex items-center gap-2 h-[50px] w-[277px] flex items-center justify-center border border-[#8CC33F] bg-transparent text-[#74aa2f] font-medium text-sm rounded-lg hover:bg-[#8CC33F] hover:text-white transition-all duration-300 shadow-sm font-kumbh group cursor-pointer">
                     View All Case Studies
                     <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </button>

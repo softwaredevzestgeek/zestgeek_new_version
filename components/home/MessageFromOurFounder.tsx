@@ -11,7 +11,7 @@ const statMetrics = [
 
 export function MessageFromOurFounder() {
   return (
-    <section className="relative w-full bg-[#fcfdfd] py-[100px] px-[135px] flex flex-col items-center justify-center font-sans overflow-hidden">
+    <section className="relative w-full bg-[#fcfdfd] py-[100px] px-[135px] flex flex-col items-center justify-center font-sans overflow-hidden bg-[#F8FAF9]">
       
       <div className="w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">

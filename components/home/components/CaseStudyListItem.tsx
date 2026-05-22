@@ -1,38 +1,154 @@
-import Image from "next/image";
-import type { CaseStudyListItemType } from "../CaseStudies";
+import Image from 'next/image';
+import Link from 'next/link';
+import type { CaseStudyListItemType } from '../CaseStudies';
+import { ArrowRight, Check } from 'lucide-react';
 
 type CaseStudyListItemProps = {
-    project: CaseStudyListItemType
-}
+  project: CaseStudyListItemType;
+};
 
-export function CaseStudyListItem({ project }: CaseStudyListItemProps) {
-    return (
-        <div
-              className={`group relative rounded-[20px] overflow-hidden bg-slate-900 aspect-[4/5] w-full shadow-lg transition-all duration-500 ease-out hover:scale-[1.02] flex flex-col justify-end p-8`}
-            >
-              {/* Case Study Image Wrapper */}
-              <div className="absolute inset-0 z-0 bg-gradient-to-bl from-[transparent] to-black/05">
-                <Image
-                  src={project.imageSrc}
-                  alt={`${project.title} Screenshot Mockup`}
-                  fill
-                  sizes="(max-w-768px) 100vw, (max-w-1024px) 50vw, 360px"
-                  className="object-cover object-center mix-blend-overlay opacity-90 transition-transform duration-700 group-hover:scale-105"
-                />
-              </div>
+export function CaseStudyListItem({
+  project,
+}: CaseStudyListItemProps) {
+  return (
+    <div
+      className="
+        group
+        relative
+        rounded-[8px]
+        overflow-hidden
+        bg-slate-900
+        aspect-[4/5]
+        w-full
+        shadow-lg
+        px-[30px]
+      "
+    >
+      <div className="absolute inset-0">
+        <Image
+          src={project.imageSrc}
+          alt={project.title}
+          fill
+          sizes="(max-width:768px) 100vw, (max-width:1024px) 50vw, 360px"
+          className="
+            object-cover
+            object-center
+            transition-transform
+            duration-700
+            ease-out
+            group-hover:scale-105
+          "
+        />
+      </div>
 
-              {/* Dynamic bottom shadow vignette gradient layer to match the crisp readability aspect */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent pointer-events-none z-10" />
+      <div
+        className="
+          absolute
+          inset-0
+          bg-gradient-to-t
+          from-black/90
+          via-black/40
+          to-transparent
+          z-10
+        "
+      />
 
-              {/* Content text metadata box built strictly over the visual layers */}
-              <div className="relative z-20 transition-transform duration-300 group-hover:translate-y-[-4px]">
-                <h3 className="text-[20px] font-semibold text-white tracking-tight font-['Inter'] mb-1">
-                  {project.title}
-                </h3>
-                <p className="text-[16px] text-[#98989A] font-medium font-['Inter']">
-                  {project.category}
-                </p>
-              </div>
-            </div>
-    );
+      <div
+        className="
+          absolute
+          bottom-0
+          left-0
+          right-0
+          z-20
+          p-8
+          transition-all
+          duration-500
+          group-hover:opacity-0
+          group-hover:translate-y-4
+        "
+      >
+        <h3 className="text-[20px] font-medium text-white tracking-tight font-['Inter'] mb-2">
+          {project.title}
+        </h3>
+
+        <p className="text-[16px] text-[#98989a] font-normal font-['Inter']">
+          {project.category}
+        </p>
+      </div>
+
+      <div
+        className="
+          absolute
+          inset-0
+          z-30
+          flex
+          flex-col
+          justify-end
+          p-[30px]
+          bg-black/55
+          backdrop-blur-[2px]
+          opacity-0
+          translate-y-6
+          transition-all
+          duration-500
+          ease-out
+          group-hover:opacity-100
+          group-hover:translate-y-0
+        "
+      >
+        <div className="max-w-[90%]">
+          <h3 className="text-[20px] font-medium text-white mb-[8px] font-['Inter']">
+            {project.title}
+          </h3>
+
+          <p className="text-[16px] font-normal text-white mb-5 font-['Inter'] tracking-[-0.5px]">
+            {project.description}
+          </p>
+
+          <div className="flex flex-col gap-2 mb-9">
+            {project.features.map(
+              (feature, index) => (
+                <div
+                  key={index}
+                  className="flex items-center gap-2"
+                >
+                  <Check className="text-[#8CC341] h-[18px] w-[18px]" />
+
+                  <span className="text-white text-[15px] font-medium">
+                    {feature}
+                  </span>
+                </div>
+              ),
+            )}
+          </div>
+
+          {/* CTA */}
+          <Link
+            href={project.cta.href}
+            className="
+              inline-flex
+              items-center
+              gap-2
+              w-[218px]
+              h-[45px]
+              rounded-[6px]
+              border
+              border-white/70
+              text-white
+              text-[14px]
+              font-medium
+              transition-all
+              duration-300
+              hover:bg-white
+              hover:text-black
+              flex items-center justify-center
+            "
+          >
+            {project.cta.label}
+            <ArrowRight className='h-[16px] w-[16px]' strokeWidth={2} />
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
 }

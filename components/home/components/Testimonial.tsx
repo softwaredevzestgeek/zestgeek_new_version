@@ -1,4 +1,3 @@
-import React from "react"
 import { type TestimonialType } from "../Testimonials"
 import { Star } from "lucide-react"
 import Image from "next/image"
@@ -11,17 +10,14 @@ export function Testimonial({ testimonial }: TestimonialProps) {
   return (
     <div
       key={testimonial.id}
-      className={`snap-center flex-shrink-0 w-[380px] rounded-[12px] p-8 text-left border transition-all duration-300 flex flex-col justify-between ${testimonial.isFeatured
-          ? 'bg-[#fafdfa] border-[#8CC33F]/30 shadow-[0_15px_40px_rgba(140,195,63,0.06)] scale-[1.01]'
-          : 'bg-white/60 backdrop-blur-sm border-gray-100/80 shadow-[0_10px_30px_rgba(0,0,0,0.01)] hover:border-gray-200'
-        }`}
+      className={`snap-center flex-shrink-0 w-[370px] h-[310px] rounded-[12px] p-8 text-left transition-all duration-300 flex flex-col justify-between bg-[#8CC33F09] backdrop-blur-sm shadow-[2px_2px_8px_rgba(0,0,0,0.05),2px_2px_8px_rgba(0,0,0,0.05)] hover:translate-y-[20px] group`}
     >
       <div>
         <div className="flex gap-1 mb-5">
           {[...Array(testimonial.rating)].map((_, i) => (
             <Star
               key={i}
-              className="w-[24px] h-[24px] fill-[#8CC33F] stroke-[#8CC33F]"
+              className="w-6 h-6 fill-[#8CC33F] stroke-[#8CC33F]"
             />
           ))}
         </div>
@@ -56,7 +52,7 @@ export function Testimonial({ testimonial }: TestimonialProps) {
           <span className="text-[18px] font-semibold text-[#0F172A] tracking-tight font-kumbh truncate">
             {testimonial.name}
           </span>
-          <span className="text-[16px] text-[#98989A] font-normal font-['Inter'] truncate">
+          <span className="text-[16px] text-[#98989A] font-normal font-['Inter'] truncate group-hover:[text-shadow:0_5px_3.5px_rgba(0,0,0,0.35)] transition-all duration-300">
             {testimonial.role}
           </span>
         </div>

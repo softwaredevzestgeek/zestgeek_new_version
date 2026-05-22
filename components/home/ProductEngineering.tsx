@@ -1,70 +1,93 @@
 'use client';
 
-import React, { useRef, useEffect, useCallback, useState } from 'react';
+import { useRef, useEffect, useCallback, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Laptop, Smartphone, Cloud, Rocket, TrendingUp } from 'lucide-react';
 import ArrowUpRightIcon from '@/public/assets/svgs/arrow_up_right.svg';
-import ProdEngineerImg2 from '@/public/assets/images/prod_engineer_img2.png';
+import { homeContent } from '@/constants/home';
 
-// ─── IMAGES ──────────────────────────────────────────────────────────────────
-const TAB_IMAGES = {
-  web:       ProdEngineerImg2,
-  mobile:    ProdEngineerImg2,
-  saas:      ProdEngineerImg2,
-  mvp:       ProdEngineerImg2,
-  marketing: ProdEngineerImg2,
-} as const;
+const tabData = homeContent.productEngineering.tabData;
 
-// ─── TAB DATA ─────────────────────────────────────────────────────────────────
-const tabData = [
-  { id: 'web',       icon: Laptop,     title: 'Web Application Development', description: 'Build scalable, high-performance web applications',  badge: null,           alt: 'Web Application Mockup Dashboard'   },
-  { id: 'mobile',    icon: Smartphone, title: 'Mobile App Development',       description: 'Create intuitive iOS and Android apps',              badge: null,           alt: 'Mobile & SaaS Overview Dashboard'   },
-  { id: 'saas',      icon: Cloud,      title: 'SaaS Development',             description: 'Develop secure and scalable SaaS platforms',         badge: null,           alt: 'SaaS Dashboard Preview'             },
-  { id: 'mvp',       icon: Rocket,     title: 'MVP Development',              description: 'Validate and launch your product quickly',           badge: 'Most Popular', alt: 'MVP Product Showcase'               },
-  { id: 'marketing', icon: TrendingUp, title: 'Digital Marketing',            description: 'Drive growth with data-driven strategies',           badge: null,           alt: 'Marketing Analytics Dashboard'      },
-] as const;
+type TabItem = (typeof tabData)[number];
 
-type TabId = typeof tabData[number]['id'];
-
-// ─── LAYOUT CONSTANTS ─────────────────────────────────────────────────────────
-// Height of the main (active) image card
 const CARD_H = 460;
-// Height of the peeking next card shown below
 const PEEK_H = 80;
-// Gap between active card and peek card
 const GAP = 16;
-// Total column height = active card + gap + peek
+
 const COL_H = CARD_H + GAP + PEEK_H;
 
-// ─── GLOW GRADIENTS ───────────────────────────────────────────────────────────
-function getGlowGradient(index: number, total: number): string {
-  if (index === 0)
-    return `linear-gradient(to bottom, rgba(140,195,63,0.30) 0%, rgba(140,195,63,0.14) 50%, transparent 100%)`;
-  if (index === total - 1)
-    return `linear-gradient(to top,   rgba(140,195,63,0.30) 0%, rgba(140,195,63,0.14) 50%, transparent 100%)`;
-  return `radial-gradient(ellipse at center, rgba(140,195,63,0.28) 0%, rgba(140,195,63,0.10) 45%, transparent 100%)`;
+const SCROLL_PER_TAB = 300;
+
+const SENTINEL_EXTRA_H =
+  (tabData.length - 1) * SCROLL_PER_TAB;
+
+const IMAGE_LERP = 0.18;
+
+const IMAGE_OPACITY_TRANSITION =
+  'opacity 0.22s ease-out';
+
+const SNAP_LOCK_MS = 520;
+
+function getGlowGradient(
+  index: number,
+  total: number,
+): string {
+  if (index === 0) {
+    return `linear-gradient(
+      to bottom,
+      rgba(140,195,63,0.30) 0%,
+      rgba(140,195,63,0.14) 50%,
+      transparent 100%
+    )`;
+  }
+
+  if (index === total - 1) {
+    return `linear-gradient(
+      to top,
+      rgba(140,195,63,0.30) 0%,
+      rgba(140,195,63,0.14) 50%,
+      transparent 100%
+    )`;
+  }
+
+  return `radial-gradient(
+    ellipse at center,
+    rgba(140,195,63,0.28) 0%,
+    rgba(140,195,63,0.10) 45%,
+    transparent 100%
+  )`;
 }
 
-// ─── TAB ROW ──────────────────────────────────────────────────────────────────
-function TabRow({ tab, index, total, isActive, onClick }: {
-  tab: typeof tabData[number];
+function TabRow({
+  tab,
+  index,
+  total,
+  isActive,
+  onClick,
+}: {
+  tab: TabItem;
   index: number;
   total: number;
   isActive: boolean;
   onClick: () => void;
 }) {
   const Icon = tab.icon;
+
   return (
     <div
-      className={`relative overflow-hidden transition-transform duration-500 cursor-pointer ${isActive ? 'scale-[1.015]' : 'scale-100'}`}
+      className={`relative overflow-hidden transition-transform duration-500 cursor-pointer ${isActive ? 'scale-[1.015]' : 'scale-100'
+        }`}
       onClick={onClick}
     >
       <div
         aria-hidden
-        className={`absolute inset-0 pointer-events-none transition-opacity duration-500 ${isActive ? 'opacity-100' : 'opacity-0'}`}
-        style={{ background: getGlowGradient(index, total) }}
+        className={`absolute inset-0 pointer-events-none transition-opacity duration-300 ${isActive ? 'opacity-100' : 'opacity-0'
+          }`}
+        style={{
+          background: getGlowGradient(index, total),
+        }}
       />
+
       <div className="w-full text-left p-[24px] flex items-start gap-4 relative z-10">
         <div className="flex-1 pr-[12px]">
           <div className="flex flex-wrap items-center justify-between gap-2">
@@ -72,14 +95,19 @@ function TabRow({ tab, index, total, isActive, onClick }: {
               <div className="mt-0.5 flex-shrink-0 text-black">
                 <Icon className="w-[26px] h-[26px] stroke-[1.8]" />
               </div>
-              <span className="text-[18px] text-black font-['Inter'] font-medium leading-tight">{tab.title}</span>
+
+              <span className="text-[18px] text-black font-['Inter'] font-medium leading-tight">
+                {tab.title}
+              </span>
             </div>
+
             {tab.badge && (
               <span className="text-[10px] font-medium text-[#8CC33F] border border-[#8CC33F] px-1 py-[1px] rounded-full font-['Inter']">
                 {tab.badge}
               </span>
             )}
           </div>
+
           <p className="text-[13px] ml-[38px] text-gray-400 font-medium leading-relaxed font-['Inter'] mt-1">
             {tab.description}
           </p>
@@ -89,55 +117,58 @@ function TabRow({ tab, index, total, isActive, onClick }: {
   );
 }
 
-// ─── IMAGE COLUMN ─────────────────────────────────────────────────────────────
-// Layout: active card sits at top (CARD_H tall), peek card shows below with GAP.
-// On transition, cards slide up by (CARD_H + GAP) px — one slot at a time.
-// smoothValue is the fractional active index (lerped).
-
-function ImageColumn({ smoothValue }: { smoothValue: number }) {
-  const slotPx = CARD_H + GAP; // pixels per slot
+function ImageColumn({
+  smoothValue,
+}: {
+  smoothValue: number;
+}) {
+  const slotPx = CARD_H + GAP;
 
   return (
     <div className="lg:col-span-7 h-full">
-      {/* Clip to exactly the visible area: active card + gap + peek strip */}
       <div
         className="relative overflow-hidden rounded-2xl"
         style={{ height: COL_H }}
       >
         {tabData.map((tab, index) => {
-          // Each card's top = index * slotPx, then offset by -smoothValue * slotPx
-          const topPx = index * slotPx - smoothValue * slotPx;
+          const topPx =
+            index * slotPx - smoothValue * slotPx;
 
-          // Scale & opacity: only active card is full; others fade/shrink
-          const offset  = index - smoothValue;
-          const absOff  = Math.abs(offset);
-          const scale   = 1 - Math.min(absOff, 2) * 0.02;
-          const opacity = offset < -0.05
-            ? 0                                        // above active → hide
-            : 1 - Math.min(absOff, 3) * 0.15;        // below → fade gradually
+          const offset = index - smoothValue;
+
+          const absOff = Math.abs(offset);
+
+          const scale =
+            1 - Math.min(absOff, 2) * 0.02;
+
+          const opacity = 1 - Math.min(absOff, 1.5) * 0.35;
 
           return (
             <div
               key={tab.id}
               className="absolute left-0 right-0 transform-gpu will-change-transform"
               style={{
-                top:       topPx,
-                height:    CARD_H,
-                transform: `scale(${scale})`,
+                top: topPx,
+                height: CARD_H,
+                transform: `translateZ(0) scale(${scale})`,
                 transformOrigin: 'top center',
                 opacity,
                 zIndex: 100 - Math.abs(Math.round(offset)),
-                transition: 'opacity 0.4s ease',
+                transition: IMAGE_OPACITY_TRANSITION,
               }}
             >
-              <div className="relative group rounded-2xl overflow-hidden border border-gray-100 shadow-sm w-full h-full bg-white">
+              <div className="relative group rounded-2xl overflow-hidden border border-gray-100 shadow-sm w-full h-full bg-[#0f172a]">
                 <Image
-                  src={TAB_IMAGES[tab.id as TabId]}
+                  src={tab.image_uri}
                   alt={tab.alt}
                   fill
-                  className="object-cover object-center transition-transform duration-700 ease-out group-hover:scale-[1.01]"
+                  className="object-cover object-center transition-transform duration-300 ease-out group-hover:scale-[1.01]"
+                  priority={index === 0}
+                  loading="eager"
                 />
+
                 <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-black/10 pointer-events-none" />
+
                 <div className="absolute top-6 right-6 z-10">
                   <Link
                     href="#explore"
@@ -155,196 +186,335 @@ function ImageColumn({ smoothValue }: { smoothValue: number }) {
   );
 }
 
-// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export function ProductEngineering() {
-  const sectionRef = useRef<HTMLDivElement | null>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [smoothValue, setSmoothValue] = useState(0);
+  const sentinelRef =
+    useRef<HTMLDivElement | null>(null);
 
-  // Animation refs
-  const targetRef  = useRef(0);
+  const [activeIndex, setActiveIndex] =
+    useState(0);
+
+  const [smoothValue, setSmoothValue] =
+    useState(0);
+
+  const targetRef = useRef(0);
+
   const currentRef = useRef(0);
-  const rafRef     = useRef<number | null>(null);
 
-  // Scroll control refs
-  const isLockedRef    = useRef(false);
-  const activeRef      = useRef(0);
-  // Gate: true while we're animating to a tab — ignores ALL scroll until done
+  const rafRef = useRef<number | null>(null);
+
+  // prevents multi-card skipping
   const isAnimatingRef = useRef(false);
 
-  const LERP_FACTOR      = 0.10;
-  const SETTLE_THRESHOLD = 0.002;
+  // touch support
+  const touchStartYRef = useRef(0);
 
-  // ── LERP animation loop ────────────────────────────────────────────────────
+  // latest index ref
+  const activeIndexRef = useRef(0);
+
+  useEffect(() => {
+    activeIndexRef.current = activeIndex;
+  }, [activeIndex]);
+
+  // ─────────────────────────────────────────────────────────────
+  // IMAGE INTERPOLATION
+  // ─────────────────────────────────────────────────────────────
   const tick = useCallback(() => {
-    const diff = targetRef.current - currentRef.current;
-    if (Math.abs(diff) < SETTLE_THRESHOLD) {
+    const diff =
+      targetRef.current - currentRef.current;
+
+    if (Math.abs(diff) < 0.0015) {
       currentRef.current = targetRef.current;
+
       setSmoothValue(targetRef.current);
-      rafRef.current    = null;
-      // Animation done — re-open the gate after a short settled pause
-      setTimeout(() => { isAnimatingRef.current = false; }, 120);
+
+      rafRef.current = null;
+
       return;
     }
-    currentRef.current += diff * LERP_FACTOR;
+
+    currentRef.current += diff * IMAGE_LERP;
+
     setSmoothValue(currentRef.current);
-    rafRef.current = requestAnimationFrame(tick);
+
+    rafRef.current =
+      requestAnimationFrame(tick);
   }, []);
 
   const startRAF = useCallback(() => {
     if (rafRef.current === null) {
-      rafRef.current = requestAnimationFrame(tick);
+      rafRef.current =
+        requestAnimationFrame(tick);
     }
   }, [tick]);
 
-  const goToTab = useCallback((index: number) => {
-    const clamped = Math.max(0, Math.min(tabData.length - 1, index));
-    if (clamped === activeRef.current && isAnimatingRef.current) return;
-    isAnimatingRef.current = true;
-    activeRef.current      = clamped;
-    targetRef.current      = clamped;
-    setActiveIndex(clamped);
-    startRAF();
-  }, [startRAF]);
+  // ─────────────────────────────────────────────────────────────
+  // MAIN NAVIGATION
+  // ─────────────────────────────────────────────────────────────
+  const goToTab = useCallback(
+    (
+      nextIndex: number,
+      smoothScroll = true,
+    ) => {
+      const sentinel = sentinelRef.current;
 
-  // ── Scroll-lock & hijack ───────────────────────────────────────────────────
+      if (!sentinel) return;
+
+      const clamped = Math.max(
+        0,
+        Math.min(
+          tabData.length - 1,
+          nextIndex,
+        ),
+      );
+
+      // hard lock immediately
+      isAnimatingRef.current = true;
+
+      setActiveIndex(clamped);
+
+      targetRef.current = clamped;
+
+      startRAF();
+
+      const sentinelTop =
+        sentinel.getBoundingClientRect().top +
+        window.scrollY;
+
+      const targetScrollY =
+        sentinelTop +
+        clamped * SCROLL_PER_TAB;
+
+      console.log("sentinelTop: ", sentinelTop)
+      console.log("TARGET clamped: ", clamped)
+      console.log("TARGET SCROLL: ", targetScrollY)
+
+      window.scrollTo({
+        top: targetScrollY,
+        behavior: smoothScroll
+          ? 'smooth'
+          : 'auto',
+      });
+
+      // unlock AFTER scroll settles
+      window.setTimeout(() => {
+        isAnimatingRef.current = false;
+      }, SNAP_LOCK_MS);
+    },
+    [startRAF],
+  );
+
+  // ─────────────────────────────────────────────────────────────
+  // TAB CLICK
+  // ─────────────────────────────────────────────────────────────
+  const handleTabClick = useCallback(
+    (index: number) => {
+      if (isAnimatingRef.current) return;
+
+      goToTab(index);
+    },
+    [goToTab],
+  );
+
+  // ─────────────────────────────────────────────────────────────
+  // HARD SNAP WHEEL
+  // THIS FIXES MULTI IMAGE SKIP
+  // ─────────────────────────────────────────────────────────────
+  // ─── constants (top of file) ───────────────────────────────────
+  const SNAP_LOCK_MS = 1200;
+  const WHEEL_COOLDOWN_MS = 900;
+
+  // ─── inside ProductEngineering() ──────────────────────────────
+  const lastWheelHandledRef = useRef(0);
+
+  // ─── replace your handleWheel useEffect ───────────────────────
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    // Lock when section is ≥50% visible
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        isLockedRef.current = entry.isIntersecting && entry.intersectionRatio >= 0.5;
-      },
-      { threshold: 0.5 }
-    );
-    observer.observe(section);
-
     const handleWheel = (e: WheelEvent) => {
-      if (!isLockedRef.current) return;
+      const sentinel = sentinelRef.current;
+      if (!sentinel) return;
 
-      const scrollingDown = e.deltaY > 0;
-      const current       = activeRef.current;
+      const rect = sentinel.getBoundingClientRect();
+      const isInsideSection =
+        rect.top <= 0 && rect.bottom >= window.innerHeight;
 
-      if (scrollingDown && current < tabData.length - 1) {
-        // Still tabs to show → always hijack, ignore deltaY magnitude
+      if (!isInsideSection) return;
+
+      const now = Date.now();
+      const sinceLastHandled = now - lastWheelHandledRef.current;
+
+      // block during animation OR within cooldown window after last handled event
+      if (isAnimatingRef.current || sinceLastHandled < WHEEL_COOLDOWN_MS) {
         e.preventDefault();
-        if (isAnimatingRef.current) return; // ignore during animation
-        goToTab(current + 1);
+        e.stopPropagation();
         return;
       }
 
-      if (!scrollingDown && current > 0) {
-        e.preventDefault();
-        if (isAnimatingRef.current) return;
-        goToTab(current - 1);
+      const direction = e.deltaY > 0 ? 1 : -1;
+      const current = activeIndexRef.current;
+      const nextIndex = current + direction;
+
+      if (nextIndex < 0 || nextIndex > tabData.length - 1) return;
+
+      e.preventDefault();
+      e.stopPropagation();
+      lastWheelHandledRef.current = Date.now(); // stamp before navigating
+      goToTab(nextIndex);
+    };
+
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    return () => window.removeEventListener('wheel', handleWheel);
+  }, [goToTab]);
+
+  // ─────────────────────────────────────────────────────────────
+  // TOUCH SNAP
+  // ─────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const handleTouchStart = (
+      e: TouchEvent,
+    ) => {
+      touchStartYRef.current =
+        e.touches[0].clientY;
+    };
+
+    const handleTouchEnd = (
+      e: TouchEvent,
+    ) => {
+      const sentinel = sentinelRef.current;
+
+      if (!sentinel) return;
+
+      const rect =
+        sentinel.getBoundingClientRect();
+
+      const isInsideSection =
+        rect.top <= 0 &&
+        rect.bottom >= window.innerHeight;
+
+      if (!isInsideSection) return;
+
+      if (isAnimatingRef.current) return;
+
+      const endY =
+        e.changedTouches[0].clientY;
+
+      const delta =
+        touchStartYRef.current - endY;
+
+      if (Math.abs(delta) < 40) return;
+
+      const direction =
+        delta > 0 ? 1 : -1;
+
+      const nextIndex =
+        activeIndexRef.current +
+        direction;
+
+      if (
+        nextIndex < 0 ||
+        nextIndex > tabData.length - 1
+      ) {
         return;
       }
 
-      // At boundary → let page scroll naturally
+      goToTab(nextIndex);
     };
 
-    // Touch
-    let touchStartY  = 0;
-    let touchLocked  = false;
+    window.addEventListener(
+      'touchstart',
+      handleTouchStart,
+      {
+        passive: true,
+      },
+    );
 
-    const handleTouchStart = (e: TouchEvent) => {
-      touchStartY = e.touches[0].clientY;
-      touchLocked = false;
-    };
-
-    const handleTouchMove = (e: TouchEvent) => {
-      if (!isLockedRef.current) return;
-      const deltaY       = touchStartY - e.touches[0].clientY;
-      const scrollingDown = deltaY > 30;  // require 30px threshold
-      const scrollingUp   = deltaY < -30;
-      const current       = activeRef.current;
-
-      if (scrollingDown && current < tabData.length - 1) {
-        e.preventDefault();
-        if (touchLocked || isAnimatingRef.current) return;
-        touchLocked = true;
-        goToTab(current + 1);
-        touchStartY = e.touches[0].clientY;
-      } else if (scrollingUp && current > 0) {
-        e.preventDefault();
-        if (touchLocked || isAnimatingRef.current) return;
-        touchLocked = true;
-        goToTab(current - 1);
-        touchStartY = e.touches[0].clientY;
-      }
-    };
-
-    window.addEventListener('wheel',      handleWheel,      { passive: false });
-    window.addEventListener('touchstart', handleTouchStart, { passive: true  });
-    window.addEventListener('touchmove',  handleTouchMove,  { passive: false });
+    window.addEventListener(
+      'touchend',
+      handleTouchEnd,
+      {
+        passive: true,
+      },
+    );
 
     return () => {
-      observer.disconnect();
-      window.removeEventListener('wheel',      handleWheel);
-      window.removeEventListener('touchstart', handleTouchStart);
-      window.removeEventListener('touchmove',  handleTouchMove);
-      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      window.removeEventListener(
+        'touchstart',
+        handleTouchStart,
+      );
+
+      window.removeEventListener(
+        'touchend',
+        handleTouchEnd,
+      );
     };
   }, [goToTab]);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative w-full bg-gradient-to-br from-white via-[#fcfefe] to-[#f4faf6] px-[135px]"
+    <div
+      ref={sentinelRef}
+      style={{
+        height: `calc(100vh + ${SENTINEL_EXTRA_H}px)`,
+      }}
+      className="relative w-full"
     >
-      {/* Ambient blobs */}
-      <div aria-hidden className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-4   right-4  w-96 h-96 bg-[#588C0F30] rounded-full opacity-60 blur-[80px]" />
-        <div className="absolute bottom-8 left-4  w-52 h-52 bg-[#6A9AB690] rounded-full opacity-60 blur-[80px]" />
-      </div>
+      <div className="sticky top-0 w-full bg-gradient-to-br from-white via-[#fcfefe] to-[#f4faf6] px-[135px] overflow-hidden">
+        <div
+          aria-hidden
+          className="absolute inset-0 pointer-events-none overflow-hidden"
+        >
+          <div className="absolute top-4 right-4 w-96 h-96 bg-[#588C0F30] rounded-full opacity-60 blur-[80px]" />
 
-      <div className="relative z-10 py-[60px]">
-
-        {/* Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block bg-[#8CC33F] text-white text-xs font-semibold tracking-wide px-3 py-1 rounded-full mb-4 shadow-sm shadow-[#8CC33F]/20 font-kumbh">
-            Product Engineering
-          </span>
-          <h2 className="text-3xl md:text-4xl font-semibold text-[#0f172a] tracking-tight max-w-2xl mx-auto mb-4 relative">
-            <div className="bg-[#6A9AB610] h-[30px] w-[280px] rounded-2xl absolute top-3.5 right-18 z-[-1]" />
-            Build Scalable Digital Products
-          </h2>
-          <p className="text-sm md:text-base text-gray-500 max-w-2xl mx-auto leading-relaxed font-['Inter'] font-medium">
-            We design and develop high-performance web, mobile, and SaaS products that drive business growth.
-          </p>
+          <div className="absolute bottom-8 left-4 w-52 h-52 bg-[#6A9AB690] rounded-full opacity-60 blur-[80px]" />
         </div>
 
-        {/* Sticky grid */}
-        <div className="sticky top-[60px]">
-          <div className="grid grid-cols-12 gap-8 items-start">
+        <div className="relative z-10 py-[60px]">
+          <div className="text-center mb-16">
+            <span className="inline-block bg-[#8CC33F] text-white text-xs font-semibold tracking-wide px-3 py-1 rounded-full mb-4 shadow-sm shadow-[#8CC33F]/20 font-kumbh">
+              Product Engineering
+            </span>
 
-            {/* LEFT — tab list, height matches active card exactly */}
+            <h2 className="text-[32px] font-semibold text-[#0f172a] tracking-tight max-w-2xl mx-auto mb-4 relative">
+              <div className="bg-[#6A9AB610] h-[30px] w-[240px] rounded-2xl absolute top-3.5 right-[110] z-[-1]" />
+              Build Scalable Digital Products
+            </h2>
+
+            <p className="text-[16px] text-gray-500 max-w-2xl mx-auto leading-relaxed font-['Inter'] font-medium">
+              We design and develop
+              high-performance web, mobile,
+              and SaaS products that drive
+              business growth.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-12 gap-8 items-start">
             <div
               className="lg:col-span-5 bg-white/40 backdrop-blur-sm border border-[#8CC33F40] rounded-2xl overflow-hidden flex flex-col justify-between shadow-[0_8px_30px_rgb(0,0,0,0.01)] z-20"
               style={{ height: CARD_H }}
             >
               <div className="flex flex-col divide-y divide-gray-100/70 h-full justify-between">
-                {tabData.map((tab, index) => (
-                  <TabRow
-                    key={tab.id}
-                    tab={tab}
-                    index={index}
-                    total={tabData.length}
-                    isActive={activeIndex === index}
-                    onClick={() => goToTab(index)}
-                  />
-                ))}
+                {tabData.map((tab, index) => {
+                  return (
+                    <TabRow
+                      key={tab.id}
+                      tab={tab}
+                      index={index}
+                      total={tabData.length}
+                      isActive={
+                        activeIndex === index
+                      }
+                      onClick={() =>
+                        handleTabClick(index)
+                      }
+                    />
+                  );
+                })}
               </div>
             </div>
 
-            {/* RIGHT — image stack with peek */}
-            <ImageColumn smoothValue={smoothValue} />
+            <ImageColumn
+              smoothValue={smoothValue}
+            />
           </div>
         </div>
-
       </div>
-    </section>
+    </div>
   );
 }

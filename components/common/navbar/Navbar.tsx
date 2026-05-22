@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
-import Logo from "@/public/assets/svgs/zestgeek_logo.svg";
+import ZestgeekLogo from "@/public/assets/svgs/zestgeek_logo.svg";
 import { NavbarContent, navbarItems } from "@/constants/navbar";
 import { GradientThemeButton } from "@/components";
 
@@ -14,7 +14,7 @@ const Navbar = () => {
     <nav className="relative z-50 bg-black px-[135px]">
       <div className="flex h-[73px] max-w-screen items-center justify-between">
         <Link href="/" className="flex shrink-0 items-center">
-          <Logo className="h-[48px] w-auto" />
+          <ZestgeekLogo className="h-[48px] w-auto" />
         </Link>
 
         <div className="flex h-full items-center gap-10">
@@ -210,7 +210,7 @@ const Navbar = () => {
             h-[45px]
             w-[261px]
             rounded-[6px]
-            px-7
+            px-[30px]
             shadow-[0_0_30px_rgba(101,255,0,0.15)]
           "
           textClassName="text-[15px] font-[600] text-white"

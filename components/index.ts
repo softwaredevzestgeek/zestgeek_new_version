@@ -11,3 +11,6 @@ export * from './home/CaseStudies'
 export * from './home/Testimonials'
 export * from './home/WhyChooseUs'
 export * from './home/CommonFaq'
+export * from './home/WorkTogether'
+export * from './Footer'
+

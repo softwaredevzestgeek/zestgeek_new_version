@@ -45,7 +45,7 @@ body {
 
   .animate-marquee-seamless {
     width: max-content;
-    animation: marquee 90s linear infinite;
+    animation: marquee 30s linear infinite;
     will-change: transform;
   }
 }

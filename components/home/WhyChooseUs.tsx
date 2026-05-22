@@ -29,9 +29,9 @@ const valuePropositions = [
 
 export function WhyChooseUs() {
   return (
-    <section className="relative w-full bg-[#fcfdfd] py-[100px] px-[135px] flex flex-col items-center justify-center overflow-hidden">
+    <section className="relative w-full bg-[#fcfdfd] py-[100px] px-[135px] flex flex-col items-center justify-center overflow-hidden bg-gradient-to-br from-[transparent] via-[#fff] to-[#6A9AB610]">
       
-      <div className="absolute top-1/3 left-0 w-96 h-96 bg-[#edf7f2] rounded-full filter blur-[130px] opacity-40 pointer-events-none" />
+      <div className="absolute bottom-1/5 left-[-15%] w-90 h-150 bg-[#8CC33F30] rounded-full filter blur-[100px] pointer-events-none" />
 
       <div className="w-full relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-[70px] items-center">
@@ -82,7 +82,7 @@ export function WhyChooseUs() {
             </div>
 
             <div>
-              <button className="inline-flex items-center gap-2 h-[50px] w-[246px] flex items-center justify-center border border-[#8CC33F] bg-white text-[#74aa2f] font-medium text-sm rounded-lg hover:bg-[#8CC33F] hover:text-white transition-all duration-300 shadow-sm font-kumbh group">
+              <button className="inline-flex items-center gap-2 h-[50px] w-[246px] flex items-center justify-center border border-[#8CC33F] bg-transparent text-[#74aa2f] font-medium text-sm rounded-lg hover:bg-[#8CC33F] hover:text-white transition-all duration-300 shadow-sm font-kumbh group">
                 Start Your Project
                 <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </button>

@@ -51,12 +51,12 @@ export type ProcessStepType = typeof processSteps[number]
 
 export function HowWeWork() {
   return (
-    <section className="relative w-full bg-gradient-to-b from-[#f4faf6] via-white to-white pt-24 px-4 flex flex-col items-center justify-center font-sans overflow-hidden">
+    <section className="relative w-full bg-gradient-to-b from-[#f4faf6] via-white to-white py-[100px] px-[135px] flex flex-col items-center justify-center font-sans overflow-hidden">
       
       {/* Background ambient accents */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[350px] bg-gradient-to-r from-[#eefaf2]/40 via-transparent to-[#eefaf2]/40 rounded-full filter blur-[100px] pointer-events-none" />
 
-      <div className="max-w-6xl w-full mx-auto text-center relative z-10">
+      <div className="w-full mx-auto text-center relative z-10">
         
         {/* Header Badge */}
         <span className="inline-block bg-[#8CC33F] text-white text-[14px] font-semibold tracking-wide px-3 py-1 rounded-full mb-4 shadow-sm shadow-[#8CC33F]/20 font-kumbh">
@@ -75,7 +75,7 @@ export function HowWeWork() {
         </p>
 
         {/* Process Steps Layout Wrapper */}
-        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 items-start min-h-[260px]">
+        <div className="relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 items-start">
 
           {/* Dynamic mapping loop */}
           {processSteps.map((step, index) => <ProcessStep key={step.id} step={step} index={index} />)}

@@ -19,15 +19,15 @@ export function SolutionItem({ item, index }: SolutionItemProps) {
                   <div className="w-fit h-fit rounded-xl flex items-center justify-center mb-[18px] text-[#8CC33F] transition-colors duration-300">
                     <IconComponent className="w-[40px] h-[40px] stroke-[1.5]" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xl font-medium text-[#0f172a] mb-3 leading-snug pr-8 font-['Inter']">
+                  <div className="flex items-center justify-between mb-[18px]">
+                    <h3 className="text-xl font-medium text-[#0f172a] leading-snug pr-6 font-['Inter']">
                     {item.title}
                   </h3>
-                  <div className="w-12 h-11 rounded-full border flex items-center justify-center text-gray-400 border-[#8CC33F60] transition-colors duration-300">
+                  <div className="p-[14px] rounded-full border flex items-center justify-center border-[#8CC33F60] transition-colors duration-300">
                   <ArrowUpRightIcon />
                 </div>
                   </div>
-                  <p className="text-[16px] text-gray-500 leading-relaxed font-['Inter']">
+                  <p className="text-[16px] text-[#98989a] leading-tight font-['Inter'] font-normal">
                     {item.description}
                   </p>
                 </div>

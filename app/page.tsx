@@ -1,6 +1,6 @@
 'use server'
 
-import { HomeHeaderBanner, HeroSection,AiSolutions, ProductEngineering,HowWeWork,MessageFromOurFounder, TrustedPartners, CaseStudies, Testimonials,WhyChooseUs, FrequentlyAskedQuestions } from "@/components";
+import { HomeHeaderBanner, HeroSection,AiSolutions, ProductEngineering,HowWeWork,MessageFromOurFounder, TrustedPartners, CaseStudies, Testimonials,WhyChooseUs, FrequentlyAskedQuestions,ReadyToBuild } from "@/components";
 
 export default async function Home() {
   return (
@@ -16,6 +16,7 @@ export default async function Home() {
      <Testimonials/>
      <WhyChooseUs/>
      <FrequentlyAskedQuestions />
+     <ReadyToBuild/>
     </div>
   );
 }

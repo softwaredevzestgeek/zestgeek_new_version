@@ -4,16 +4,13 @@ import { GradientThemeButton } from "@/components/ui/GradientThemeButton";
 import { homeContent } from "@/constants/home";
 
 export function HeroSection() {
-  const gradientMap = {
-    '1': "from-[#000000] to-[#00000010]",
-    '2': "from-[#000000] to-[#00000010]",
-    '3': "from-[#000000] to-[#00000010]",
-  };
+
   return (
     <section
       className="
         relative
         h-screen
+        max-h-[700px]
         overflow-hidden
         bg-black px-[135px]
       "
@@ -60,7 +57,7 @@ export function HeroSection() {
               font-kumbh
             "
           >
-            {homeContent.heroSection.capsuleText}
+            {homeContent.heroSection?.capsuleText}
           </div>
 
           <h1
@@ -95,7 +92,7 @@ export function HeroSection() {
               text-[18px]
               font-normal
               leading-[1.65]
-              text-[#B8B8B8]
+              text-[rgba(255,255,255,0.8)]
               font-['Inter']
             "
           >
@@ -112,12 +109,13 @@ export function HeroSection() {
                 rounded-[6px]
                 shadow-[0_10px_40px_rgba(132,255,84,0.18)]
                 cursor-pointer
-                px-[24px]
+                px-[30px]
               "
               textClassName="
                 text-[16px]
                 font-semibold
                 text-white
+                font-['Inter']
               "
             />
 
@@ -189,7 +187,7 @@ export function HeroSection() {
                     className={`flex
                       items-start
                       text-[32px]
-                      font-bold
+                      font-semibold
                       leading-none
                       tracking-[-0.03em]
                       text-white font-['Inter']`}
